@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import CoreLocation
 
 class AddVideoViewController: UIViewController {
 
@@ -15,16 +16,20 @@ class AddVideoViewController: UIViewController {
     @IBOutlet weak var recordButton: UIButton!
     
     //datas from CreateExperienceVC
+    var image: UIImage?
     var name: String?
     var audioURL: URL?
-    var image: UIImage?
-    
+    var experienceController: ExperienceController?
 
     //MARK: videos outlets
     var captureSession: AVCaptureSession!
     var recordOutput: AVCaptureMovieFileOutput!
     var videoRecordingURL: URL?
     
+    //MARK: location properties
+    var cl2DLocation: CLLocationCoordinate2D?
+    
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +55,14 @@ class AddVideoViewController: UIViewController {
         
         self.captureSession = captureSession
         cameraPreviewView.videoPreviewLayer.session = captureSession
+        
+        
+        //current location
+        locationManager.requestWhenInUseAuthorization()
+        let loc = locationManager.location
+        guard let latitude = loc?.coordinate.latitude,
+            let longitude = loc?.coordinate.longitude else {return}
+        cl2DLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,8 +75,6 @@ class AddVideoViewController: UIViewController {
         self.captureSession.stopRunning()
     }
     
-
-
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -75,8 +86,13 @@ class AddVideoViewController: UIViewController {
     
     @IBAction func saveButtonTapped(_ sender: Any) {
         //add createExperience here using passed properties - name, audioURL, image and videoURL from here
-        
-        
+        guard let names = self.name,
+            let images = self.image,
+            let audioURLs = self.audioURL,
+            let videoURLs = self.videoRecordingURL,
+            let geotags = self.cl2DLocation,
+            let experienceControllers = self.experienceController else {return}
+        experienceControllers.createExperience(for: names, image: images, audioURL: audioURLs, videoURL: videoURLs, geotag: geotags)
         
         self.dismiss(animated: true, completion: nil)
     }

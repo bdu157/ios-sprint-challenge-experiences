@@ -95,9 +95,9 @@
 		0BEDD071233F03DB008B4172 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				0BEDD076233F0C12008B4172 /* Map */,
 				0BEDD075233F0BF9008B4172 /* Image&Audio */,
 				0BEDD074233F0BF3008B4172 /* Video */,
-				0BEDD076233F0C12008B4172 /* Map */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";

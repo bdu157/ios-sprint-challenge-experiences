@@ -26,7 +26,6 @@ class CreateExperienceViewController: UIViewController, AVAudioRecorderDelegate 
         }
     }
     
-    
     //MARK: audio outlets
     private var recorder: AVAudioRecorder?
     private var player: AVAudioPlayer?
@@ -35,6 +34,7 @@ class CreateExperienceViewController: UIViewController, AVAudioRecorderDelegate 
         return recorder?.isRecording ?? false
     }
     
+    var experienceController: ExperienceController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,16 +45,17 @@ class CreateExperienceViewController: UIViewController, AVAudioRecorderDelegate 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ToCreateVideo" {
-            if let name = self.titleTextField.text,
-                let audioURL = self.audioURL,
-                let image = self.imageView.image,
-                let destVC = segue.destination as? AddVideoViewController {
-                destVC.name = name
-                destVC.audioURL = audioURL
-                destVC.image = image
-            }
+        guard let destVC = segue.destination as? AddVideoViewController,
+            let names = self.titleTextField.text,
+            let audioURLs = self.audioURL,
+            let images = self.imageView.image else {return}
+            destVC.name = names
+            destVC.audioURL = audioURLs
+            destVC.image = images
+            destVC.experienceController = self.experienceController
         }
     }
+
     
     @IBAction func addPosterImageButtonTapped(_ sender: Any) {
         if self.titleTextField.text != "" {
