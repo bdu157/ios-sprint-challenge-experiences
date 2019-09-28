@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class AddVideoViewController: UIViewController {
 
@@ -18,10 +19,47 @@ class AddVideoViewController: UIViewController {
     var audioURL: URL?
     var image: UIImage?
     
+
+    //MARK: videos outlets
+    var captureSession: AVCaptureSession!
+    var recordOutput: AVCaptureMovieFileOutput!
+    var videoRecordingURL: URL?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.checkAuth()
+        
+        let captureSession = AVCaptureSession()
+        let videoDevice = self.bestCamera()
+        
+        guard let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice),
+            captureSession.canAddInput(videoDeviceInput) else {fatalError()}
+        
+        captureSession.addInput(videoDeviceInput)
+        
+        let fileOutput = AVCaptureMovieFileOutput()
+        guard captureSession.canAddOutput(fileOutput) else {
+            fatalError()
+        }
+        captureSession.addOutput(fileOutput)
+        self.recordOutput = fileOutput
+        
+        captureSession.sessionPreset = .hd1920x1080
+        captureSession.commitConfiguration()
+        
+        self.captureSession = captureSession
+        cameraPreviewView.videoPreviewLayer.session = captureSession
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.captureSession.startRunning()
+    }
 
-        // Do any additional setup after loading the view.
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.captureSession.stopRunning()
     }
     
 
@@ -30,8 +68,8 @@ class AddVideoViewController: UIViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+     
+        
     }
     
     
@@ -44,6 +82,76 @@ class AddVideoViewController: UIViewController {
     }
     
     @IBAction func recordButtonTapped(_ sender: Any) {
+        if recordOutput.isRecording {
+            recordOutput.stopRecording()
+        } else {
+            recordOutput.startRecording(to: self.newRecordingURL(), recordingDelegate: self)
+        }
+    }
+    
+    //MARK: video private methods
+    //checking authorization on camera
+    private func checkAuth() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            return
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { (granter) in
+                if granter {
+                    return
+                }
+            }
+        case .denied:
+            self.authAlert()
+        case .restricted:
+            self.authAlert()
+        default:
+            return
+        }
+    }
+    private func authAlert() {
+        let alert = UIAlertController(title: "it is denied or restricted", message: "please allow camera access", preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
+        alert.addAction(okayAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    //bestCamera
+    private func bestCamera() -> AVCaptureDevice {
+        if let device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back) {
+            return device
+        } else if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
+            return device
+        } else {
+            fatalError("Missing expected back camera device")
+        }
+    }
+    //recordingURL
+    private func newRecordingURL() -> URL {
+        let fm = FileManager.default
+        let document = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         
+        return document.appendingPathComponent(UUID().uuidString).appendingPathExtension("mov")
+    }
+    //updateButton
+    private func updateViewsButton() {
+        guard isViewLoaded else {return}
+        
+        let isRecording = recordOutput?.isRecording ?? false
+        let recordButtonImage: String = isRecording ? "Stop" : "Record"
+        recordButton.setImage(UIImage(named: recordButtonImage), for: .normal)
+    }
+}
+
+extension AddVideoViewController: AVCaptureFileOutputRecordingDelegate {
+    
+    func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
+        DispatchQueue.main.async {
+            self.updateViewsButton()
+        }
+    }
+    
+    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        defer {self.updateViewsButton()}
+        self.videoRecordingURL = outputFileURL.absoluteURL
     }
 }
