@@ -109,7 +109,7 @@
                     <navigationItem key="navigationItem" title="New Experience" id="hys-eK-E7T">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="NOL-0v-9nK">
                             <connections>
-                                <segue destination="dtw-7B-vuy" kind="show" identifier="ToCreateVideo" id="vVm-Ww-uyL"/>
+                                <segue destination="dtw-7B-vuy" kind="show" identifier="ToCreateVideo" id="b1S-1G-ho6"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

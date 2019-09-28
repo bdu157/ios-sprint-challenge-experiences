@@ -16,6 +16,7 @@ class AddVideoViewController: UIViewController {
     //datas from CreateExperienceVC
     var name: String?
     var audioURL: URL?
+    var image: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
