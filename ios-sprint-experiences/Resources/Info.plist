@@ -26,6 +26,12 @@
 	<string>Main</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to add your newly filtered image</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>AudioRecorder needs access to your microphone in order to create a new audio recording</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera will need access to your video to record new videos</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>the app needs access to your location to pinpoint your current location</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
