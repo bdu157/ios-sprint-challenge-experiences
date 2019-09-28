@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B20F487233F9D3E0034E146 /* ExperienceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B20F486233F9D3E0034E146 /* ExperienceDetailView.swift */; };
 		0BEDD052233EEC4E008B4172 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEDD051233EEC4E008B4172 /* AppDelegate.swift */; };
 		0BEDD057233EEC4E008B4172 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BEDD055233EEC4E008B4172 /* Main.storyboard */; };
 		0BEDD059233EEC50008B4172 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BEDD058233EEC50008B4172 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B20F486233F9D3E0034E146 /* ExperienceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceDetailView.swift; sourceTree = "<group>"; };
 		0BEDD04E233EEC4E008B4172 /* ios-sprint-experiences.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-sprint-experiences.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BEDD051233EEC4E008B4172 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BEDD056233EEC4E008B4172 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				0BEDD06F233F03BB008B4172 /* Models */,
 				0BEDD070233F03CE008B4172 /* ModelController */,
 				0BEDD073233F040B008B4172 /* Storyboard */,
+				0B20F486233F9D3E0034E146 /* ExperienceDetailView.swift */,
 				0BEDD072233F03FE008B4172 /* Resources */,
 			);
 			path = "ios-sprint-experiences";
@@ -217,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B20F487233F9D3E0034E146 /* ExperienceDetailView.swift in Sources */,
 				0BEDD078233F0C45008B4172 /* CameraPreviewView.swift in Sources */,
 				0BEDD06C233F039C008B4172 /* Experience+Mapping.swift in Sources */,
 				0BEDD066233F035F008B4172 /* CreateExperienceViewController.swift in Sources */,

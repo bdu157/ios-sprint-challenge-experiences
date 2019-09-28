@@ -63,6 +63,11 @@ class MapViewController: UIViewController {
             annotationView.glyphTintColor = .white
             annotationView.animatesWhenAdded = true
             annotationView.titleVisibility = .adaptive
+            annotationView.canShowCallout = true
+        
+            let detailView = ExperienceDetailView()
+            detailView.experience = experience
+            annotationView.detailCalloutAccessoryView = detailView
             return annotationView
     }
 }
